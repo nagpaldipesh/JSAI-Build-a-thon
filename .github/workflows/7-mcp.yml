@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "packages/**"
+      - "app/**"
     branches:
       - main
 
@@ -44,7 +44,7 @@ jobs:
       - name: Check node-os-mcp directory exists
         id: check_node-os-mcp
         run: |
-          if [ -d "packages/node-os-mcp" ]; then
+          if [ -d "app/node-os-mcp" ]; then
             echo "agent_exists=true" >> $GITHUB_OUTPUT
           else
             echo "agent_exists=false" >> $GITHUB_OUTPUT

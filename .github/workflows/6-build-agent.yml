@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "packages/webapi/agentService.js"
+      - "app/webapi/agentService.js"
     branches:
       - main
 
@@ -44,7 +44,7 @@ jobs:
       - name: Check agentService.js file exists
         id: check_agent
         run: |
-          if [ -f "packages/webapi/agentService.js" ]; then
+          if [ -f "app/webapi/agentService.js" ]; then
             echo "agent_exists=true" >> $GITHUB_OUTPUT
           else
             echo "agent_exists=false" >> $GITHUB_OUTPUT

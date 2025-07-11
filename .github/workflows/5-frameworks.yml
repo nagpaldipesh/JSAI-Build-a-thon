@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "packages/webapi/package.json"
+      - "app/webapi/package.json"
     branches:
       - main
 
@@ -44,7 +44,7 @@ jobs:
       - name: Check for LangChain in package.json
         id: check_langchain
         run: |
-          if [ -f "packages/webapi/package.json" ] && grep -q "@langchain/openai" packages/webapi/package.json; then
+          if [ -f "app/webapi/package.json" ] && grep -q "@langchain/openai" app/webapi/package.json; then
             echo "langchain_exists=true" >> $GITHUB_OUTPUT
           else
             echo "langchain_exists=false" >> $GITHUB_OUTPUT
