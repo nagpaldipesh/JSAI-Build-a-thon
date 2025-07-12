@@ -1,0 +1,41 @@
+{
+  "name": "",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "license": "AGPL-version-3.0",
+  "private": false,
+  "engines": {
+    "node": ">= 14.0.0",
+    "npm": ">= 6.0.0"
+  },
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": "",
+  "keywords": [],
+  "author": {
+    "name": "",
+    "email": "",
+    "url": ""
+  },
+  "contributors": [],
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@azure-rest/ai-inference": "^1.0.0-beta.6",
+    "@azure/ai-projects": "^1.0.0-beta.10",
+    "@azure/core-auth": "^1.10.0",
+    "@azure/identity": "^4.10.2",
+    "@langchain/openai": "^0.5.18",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "langchain": "^0.3.29",
+    "pdf-parse": "^1.1.1"
+  }
+}
