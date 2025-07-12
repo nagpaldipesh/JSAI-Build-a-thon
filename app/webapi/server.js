@@ -9,6 +9,7 @@ import { dirname } from 'path';
 import pdfParse from 'pdf-parse/lib/pdf-parse.js';
 import { BufferMemory } from "langchain/memory";
 import { ChatMessageHistory } from "langchain/stores/message/in_memory";
+import { AgentService } from "./agentService.js";
 
 dotenv.config();
 const app = express();
@@ -30,6 +31,8 @@ const chatModel = new AzureChatOpenAI({
   maxTokens: 4096,
 });
 
+const agentService = new AgentService();
+
 app.post("/chat", async (req, res) => {
   const userMessage = req.body.message;
   const useRAG = req.body.useRAG === undefined ? true : req.body.useRAG;
@@ -48,17 +51,28 @@ app.post("/chat", async (req, res) => {
   // Prepare system prompt
   const systemMessage = useRAG
     ? {
-        role: "system",
-        content: sources.length > 0
-          ? `You are a helpful assistant for Contoso Electronics. You must ONLY use the information provided below to answer.\n\n--- EMPLOYEE HANDBOOK EXCERPTS ---\n${sources.join('\n\n')}\n--- END OF EXCERPTS ---`
-          : `You are a helpful assistant for Contoso Electronics. The excerpts do not contain relevant information for this question. Reply politely: \"I'm sorry, I don't know. The employee handbook does not contain information about that.\"`,
-      }
+      role: "system",
+      content: sources.length > 0
+        ? `You are a helpful assistant for Contoso Electronics. You must ONLY use the information provided below to answer.\n\n--- EMPLOYEE HANDBOOK EXCERPTS ---\n${sources.join('\n\n')}\n--- END OF EXCERPTS ---`
+        : `You are a helpful assistant for Contoso Electronics. The excerpts do not contain relevant information for this question. Reply politely: \"I'm sorry, I don't know. The employee handbook does not contain information about that.\"`,
+    }
     : {
-        role: "system",
-        content: "You are a helpful and knowledgeable assistant. Answer the user's questions concisely and informatively.",
-      };
+      role: "system",
+      content: "You are a helpful and knowledgeable assistant. Answer the user's questions concisely and informatively.",
+    };
 
   try {
+    const mode = req.body.mode || "basic";
+
+    // If agent mode is selected, route to agent service
+    if (mode === "agent") {
+      const agentResponse = await agentService.processMessage(sessionId, userMessage);
+      return res.json({
+        reply: agentResponse.reply,
+        sources: []
+      });
+    }
+    
     // Build final messages array
     const messages = [
       systemMessage,

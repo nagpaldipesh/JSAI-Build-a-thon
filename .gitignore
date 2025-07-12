@@ -405,3 +405,4 @@ FodyWeavers.xsd
 .azure
 
 package-lock.json
+my-agent.agent.yaml
